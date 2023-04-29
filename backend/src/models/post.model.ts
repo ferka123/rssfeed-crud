@@ -1,28 +1,27 @@
-import { getModelForClass, prop } from '@typegoose/typegoose';
+import { Schema, model } from 'mongoose';
 
-class Post {
-  @prop({ required: true })
-  title!: string;
-
-  @prop({ required: true })
-  image!: string;
-
-  @prop({ required: true })
-  content!: string;
-
-  @prop({ required: true })
-  url!: string;
-
-  @prop({ default: () => new Date().toISOString() })
-  date: string;
-
-  @prop({ required: true })
-  creator!: string;
-
-  @prop({ type: () => [String], default: [] })
-  tags: string[];
+interface IPost {
+  title: string;
+  image: string;
+  content: string;
+  url: string;
+  date?: string;
+  creator: string;
+  tags?: string[];
 }
 
-const postModel = getModelForClass(Post);
+const postSchema = new Schema<IPost>({
+  title: { type: String, required: true },
+  image: { type: String, required: true },
+  content: { type: String, required: true },
+  url: { type: String, required: true },
+  date: { type: String, default: new Date().toISOString() },
+  tags: {
+    type: [String],
+    default: []
+  }
+});
+
+const postModel = model<IPost>('Post', postSchema);
 
 export default postModel;

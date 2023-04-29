@@ -1,10 +1,13 @@
-import { getModelForClass, prop } from '@typegoose/typegoose';
+import { Schema, model } from 'mongoose';
 
-class Rssfeed {
-  @prop({ required: true })
-  lastUpdate!: string;
+interface IRssFeedStatus {
+  lastUpdate: string;
 }
 
-const rssfeedModel = getModelForClass(Rssfeed);
+const rssFeedSchema = new Schema<IRssFeedStatus>({
+  lastUpdate: { type: String, required: true }
+});
 
-export default rssfeedModel;
+const rssFeedStatusModel = model<IRssFeedStatus>('RssFeedStatus', rssFeedSchema);
+
+export default rssFeedStatusModel;
