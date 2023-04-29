@@ -1,17 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 
 import postModel from '../models/post.model';
-
-interface GetPostsQuery {
-  sortby: string;
-  order: string;
-  search: string;
-  page: string;
-  limit: string;
-}
+import { GetPostsInput } from '../schemas/post.schema';
 
 export const getPosts = async (
-  req: Request<object, object, object, Partial<GetPostsQuery>>,
+  req: Request<object, object, object, GetPostsInput>,
   res: Response,
   next: NextFunction
 ) => {
