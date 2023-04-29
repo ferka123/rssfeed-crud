@@ -1,0 +1,27 @@
+{
+  "name": "rssfeed-crud",
+  "version": "1.0.0",
+  "description": "rssfeed + admin ui",
+  "workspaces": [
+    "./frontend",
+    "./backend"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ferka123/rssfeed-crud.git"
+  },
+  "author": "ferka911",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ferka123/rssfeed-crud/issues"
+  },
+  "homepage": "https://github.com/ferka123/rssfeed-crud#readme",
+  "devDependencies": {
+    "husky": "^8.0.3"
+  }
+}
