@@ -10,4 +10,11 @@ export const getPostsSchema = object({
   }).partial()
 });
 
+export const deletePostSchema = object({
+  params: object({
+    id: string()
+  })
+});
+
 export type GetPostsInput = TypeOf<typeof getPostsSchema>['query'];
+export type DeletePostInput = TypeOf<typeof deletePostSchema>['params'];
