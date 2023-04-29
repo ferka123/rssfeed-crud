@@ -46,7 +46,7 @@ export const deletePost = async (
 };
 
 export const addPost = async (
-  req: Request<object, AddPostInput>,
+  req: Request<object, object, AddPostInput>,
   res: Response,
   next: NextFunction
 ) => {
@@ -63,7 +63,7 @@ export const addPost = async (
 };
 
 export const updatePost = async (
-  req: Request<{ id: string }, UpdatePostInput>,
+  req: Request<{ id: string }, object, UpdatePostInput>,
   res: Response,
   next: NextFunction
 ) => {

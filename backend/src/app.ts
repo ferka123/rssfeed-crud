@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import connectDB from './config/db';
 import { startRssGrabber } from './workers';
 import postRouter from './routes/post.routes';
+import authRouter from './routes/auth.routes';
 import errorHandler from './middleware/errorHandler';
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(cookieParser());
 
 // router
 app.use('/api/posts', postRouter);
+app.use('/api/auth', authRouter);
 
 // error Handler
 app.use(errorHandler);
