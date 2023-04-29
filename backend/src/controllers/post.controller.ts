@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import postModel from '../models/post.model';
-import { GetPostsInput, DeletePostInput } from '../schemas/post.schema';
+import { GetPostsInput, AddUpdatePostInput } from '../schemas/post.schema';
 import CustomError from '../utils/customError';
 
 export const getPosts = async (
@@ -31,7 +31,7 @@ export const getPosts = async (
 };
 
 export const deletePost = async (
-  req: Request<DeletePostInput>,
+  req: Request<{ id: string }>,
   res: Response,
   next: NextFunction
 ) => {
@@ -40,6 +40,42 @@ export const deletePost = async (
     if (!result.deletedCount) return next(new CustomError('Post not found', 404));
 
     return res.status(204);
+  } catch (e) {
+    next(e);
+  }
+};
+
+export const addPost = async (
+  req: Request<object, AddUpdatePostInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const post = await postModel.create(req.body);
+
+    res.status(200).json({
+      status: 'ok',
+      post
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+export const updatePost = async (
+  req: Request<{ id: string }, AddUpdatePostInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const post = await postModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+    if (!post) return next(new CustomError('Post not found', 404));
+
+    res.status(200).json({
+      status: 'ok',
+      post
+    });
   } catch (e) {
     next(e);
   }
