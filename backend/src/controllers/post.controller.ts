@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import postModel from '../models/post.model';
-import { GetPostsInput, AddUpdatePostInput } from '../schemas/post.schema';
+import { GetPostsInput, AddPostInput, UpdatePostInput } from '../schemas/post.schema';
 import CustomError from '../utils/customError';
 
 export const getPosts = async (
@@ -46,7 +46,7 @@ export const deletePost = async (
 };
 
 export const addPost = async (
-  req: Request<object, AddUpdatePostInput>,
+  req: Request<object, AddPostInput>,
   res: Response,
   next: NextFunction
 ) => {
@@ -63,7 +63,7 @@ export const addPost = async (
 };
 
 export const updatePost = async (
-  req: Request<{ id: string }, AddUpdatePostInput>,
+  req: Request<{ id: string }, UpdatePostInput>,
   res: Response,
   next: NextFunction
 ) => {
