@@ -9,7 +9,7 @@ import authRouter from './routes/auth.routes';
 import errorHandler from './middleware/errorHandler';
 
 const app = express();
-app.use(cors());
+app.use(cors({ credentials: true, origin: true }));
 app.use(express.json({ limit: '1kb' }));
 app.use(cookieParser());
 

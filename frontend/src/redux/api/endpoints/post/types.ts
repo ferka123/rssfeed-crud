@@ -1,9 +1,11 @@
 export interface FeedPost {
+  _id: string;
   title: string;
   image: string;
   content: string;
   url: string;
   creator: string;
+  date: string;
   tags?: string[];
 }
 

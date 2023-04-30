@@ -4,7 +4,7 @@ import { FeedOptions, SortBy, SortOrder } from './types';
 const initialState: FeedOptions = {
   search: '',
   page: 0,
-  limit: 5,
+  limit: 6,
   sortby: SortBy.date,
   order: SortOrder.dsc
 };
