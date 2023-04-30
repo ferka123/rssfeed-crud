@@ -8,6 +8,6 @@ const rssFeedSchema = new Schema<IRssFeedStatus>({
   lastUpdate: { type: String, required: true }
 });
 
-const rssFeedStatusModel = model<IRssFeedStatus>('RssFeedStatus', rssFeedSchema);
+const RssFeedStatusModel = model<IRssFeedStatus>('RssFeedStatus', rssFeedSchema);
 
-export default rssFeedStatusModel;
+export default RssFeedStatusModel;

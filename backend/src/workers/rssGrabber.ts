@@ -44,7 +44,7 @@ const grabRSS = async () => {
   } catch (e) {
     if (e instanceof Error) console.log(e.message);
   } finally {
-    setTimeout(grabRSS, Number(process.env.RSS_POLLING_TIME) ?? 300000);
+    setTimeout(grabRSS, Number(process.env.RSS_POLLING_TIME) || 300000);
   }
 };
 

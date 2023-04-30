@@ -1,25 +1,30 @@
 import { Schema, model, Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-interface IUser {
+export enum UserRole {
+  user = 'user',
+  admin = 'admin'
+}
+
+export interface IUser {
   login: string;
   password: string;
-  role: string;
+  role: UserRole;
 }
 
 interface IUserMethods {
   verifyPassword(password: string): Promise<boolean>;
 }
 
-type UserModel = Model<IUser, object, IUserMethods>;
+type TUserModel = Model<IUser, object, IUserMethods>;
 
-const userSchema = new Schema<IUser, UserModel, IUserMethods>({
+const userSchema = new Schema<IUser, TUserModel, IUserMethods>({
   login: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true, select: false },
   role: {
     type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
+    enum: UserRole,
+    default: UserRole.user
   }
 });
 
@@ -32,6 +37,6 @@ userSchema.method('verifyPassword', function verifyPassword(password: string) {
   return bcrypt.compare(password, this.password);
 });
 
-const userModel = model<IUser, UserModel>('User', userSchema);
+const UserModel = model<IUser, TUserModel>('User', userSchema);
 
-export default userModel;
+export default UserModel;
