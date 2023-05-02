@@ -10,11 +10,12 @@ export const getPosts = async (
   next: NextFunction
 ) => {
   try {
+    const sort = req.query.sortby?.split('-') ?? ['date', 'dsc'];
     const page = Number(req.query.page) || 0;
     const limit = Number(req.query.limit) || 5;
     const search = req.query.search ?? '';
-    const sortBy = req.query.sortby ?? 'date';
-    const order = req.query.order === 'dsc' ? -1 : 1;
+    const sortBy = sort[0];
+    const order = sort[1] === 'dsc' ? -1 : 1;
 
     const posts = await postModel
       .find({ title: { $regex: search, $options: 'i' } })

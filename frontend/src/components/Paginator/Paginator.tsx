@@ -7,14 +7,14 @@ const Paginatior = ({ total, options }: { total: number; options: FeedOptions })
   const dispatch = useAppDispatch();
   const maxPage = Math.floor(total / options.limit);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch(setPage(value));
+    dispatch(setPage(value - 1));
   };
   return (
     <Stack spacing={2}>
       <Pagination
         size="large"
         count={maxPage}
-        defaultPage={options.page + 1}
+        page={options.page + 1}
         showFirstButton
         showLastButton
         onChange={handleChange}

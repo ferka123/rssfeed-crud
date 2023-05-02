@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FeedOptions, SortBy, SortOrder } from './types';
+import { FeedOptions, SortBy } from './types';
 
 const initialState: FeedOptions = {
   search: '',
   page: 0,
   limit: 6,
-  sortby: SortBy.date,
-  order: SortOrder.dsc
+  sortby: SortBy.dateDsc
 };
 
 export const feedSlice = createSlice({
@@ -19,18 +18,18 @@ export const feedSlice = createSlice({
     setSearch: (state, action: PayloadAction<string>) => {
       state.search = action.payload;
     },
-    setOrder: (state, action: PayloadAction<SortOrder>) => {
-      state.order = action.payload;
-    },
     setSortBy: (state, action: PayloadAction<SortBy>) => {
       state.sortby = action.payload;
     },
     setLimit: (state, action: PayloadAction<number>) => {
       state.limit = action.payload;
+    },
+    setOptions: (state, action: PayloadAction<Partial<FeedOptions>>) => {
+      Object.assign(state, action.payload);
     }
   }
 });
 
 export default feedSlice.reducer;
 
-export const { setOrder, setLimit, setPage, setSearch, setSortBy } = feedSlice.actions;
+export const { setLimit, setPage, setSearch, setSortBy, setOptions } = feedSlice.actions;

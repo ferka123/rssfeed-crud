@@ -5,8 +5,14 @@ export const getPostsSchema = object({
     page: preprocess((n) => parseInt(string().parse(n), 10), number()),
     limit: preprocess((n) => parseInt(string().parse(n), 10), number()),
     search: string(),
-    order: zodEnum(['asc', 'dsc']),
-    sortby: zodEnum(['title', 'creator', 'date'])
+    sortby: zodEnum([
+      'title-asc',
+      'title-dsc',
+      'creator-asc',
+      'creator-dsc',
+      'date-asc',
+      'date-dsc'
+    ])
   }).partial()
 });
 

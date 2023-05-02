@@ -1,18 +1,15 @@
-export enum SortOrder {
-  asc = 'asc',
-  dsc = 'dsc'
-}
-
 export enum SortBy {
-  title = 'title',
-  creator = 'creator',
-  date = 'date'
+  titleAsc = 'title-asc',
+  titleDsc = 'title-dsc',
+  creatorAsc = 'creator-asc',
+  CreatorDsc = 'creator-dsc',
+  dateAsc = 'date-asc',
+  dateDsc = 'date-dsc'
 }
 
 export interface FeedOptions {
   page: number;
   limit: number;
-  order: SortOrder;
   sortby: SortBy;
   search: string;
 }
