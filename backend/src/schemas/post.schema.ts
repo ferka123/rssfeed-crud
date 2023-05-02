@@ -1,4 +1,4 @@
-import { object, string, TypeOf, preprocess, array, number, enum as zodEnum } from 'zod';
+import { object, string, TypeOf, preprocess, number, enum as zodEnum } from 'zod';
 
 export const getPostsSchema = object({
   query: object({
@@ -21,8 +21,7 @@ const postSchema = object({
   image: string().url({ message: 'Must be an URL' }),
   content: string().min(3, { message: 'Must be 3 or more characters long' }),
   url: string().url({ message: 'Must be an URL' }),
-  creator: string().min(3, { message: 'Must be 3 or more characters long' }),
-  tags: array(string())
+  creator: string().min(3, { message: 'Must be 3 or more characters long' })
 });
 
 export const addPostSchema = object({

@@ -1,5 +1,4 @@
 import { FeedPost } from '../../redux/api/endpoints/post/types';
-import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -11,11 +10,20 @@ import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Button from '@mui/material/Button';
+import { useState } from 'react';
+import { Menu, MenuItem } from '@mui/material';
+import PutPostModal from '../PutPostModal/PutPostModal';
+import DeletePostModal from '../DeletePostModal/DeletePostModal';
 
 const Post = ({ data }: { data: FeedPost }) => {
   const formatedDate = new Date(data.date).toLocaleDateString();
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+  const isMenuOpen = Boolean(menuAnchor);
+
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   return (
-    <Card sx={{ maxWidth: 400 }}>
+    <Card sx={{ width: { xs: '100%', md: 400 } }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="user avatar">
@@ -23,7 +31,7 @@ const Post = ({ data }: { data: FeedPost }) => {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
+          <IconButton aria-label="settings" onClick={(e) => setMenuAnchor(e.currentTarget)}>
             <MoreVertIcon />
           </IconButton>
         }
@@ -41,6 +49,30 @@ const Post = ({ data }: { data: FeedPost }) => {
           Read More
         </Button>
       </CardActions>
+      <Menu
+        anchorEl={menuAnchor}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
+        }}
+        open={isMenuOpen}
+        onClose={() => setMenuAnchor(null)}
+        onClick={() => setMenuAnchor(null)}
+      >
+        <MenuItem onClick={() => setOpenEdit(true)}>Edit</MenuItem>
+        <MenuItem onClick={() => setOpenDelete(true)}>Delete</MenuItem>
+      </Menu>
+      {openEdit && (
+        <PutPostModal open={openEdit} handleClose={() => setOpenEdit(false)} values={data} />
+      )}
+      {openDelete && (
+        <DeletePostModal open={openDelete} handleClose={() => setOpenDelete(false)} id={data._id} />
+      )}
     </Card>
   );
 };

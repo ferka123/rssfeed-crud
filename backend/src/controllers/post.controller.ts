@@ -40,7 +40,7 @@ export const deletePost = async (
     const result = await postModel.deleteOne({ _id: req.params.id });
     if (!result.deletedCount) return next(new CustomError('Post not found', 404));
 
-    return res.status(204);
+    return res.status(200).json({ status: 'ok' });
   } catch (e) {
     next(e);
   }

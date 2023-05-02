@@ -33,7 +33,7 @@ export const postsService = apiSlice.injectEndpoints({
       },
       invalidatesTags: ['Post']
     }),
-    updatePost: builder.mutation<FeedPost, { id: number; body: FormData }>({
+    updatePost: builder.mutation<FeedPost, { id: string; body: FormData }>({
       query(req) {
         return {
           url: `/posts/${req.id}`,

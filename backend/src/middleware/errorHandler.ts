@@ -5,6 +5,7 @@ import CustomError from '../utils/customError';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errorHandler = (e: unknown, req: Request, res: Response, next: NextFunction) => {
+  console.log(e);
   if (e instanceof CustomError) return res.status(e.statusCode).json(e.response());
   if (e instanceof MulterError) return res.status(400).json({ status: 'error', message: e.code });
   if (e instanceof ZodError)
