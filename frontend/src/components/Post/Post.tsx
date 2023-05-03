@@ -15,7 +15,7 @@ import { Menu, MenuItem } from '@mui/material';
 import PutPostModal from '../PutPostModal/PutPostModal';
 import DeletePostModal from '../DeletePostModal/DeletePostModal';
 
-const Post = ({ data }: { data: FeedPost }) => {
+const Post = ({ data, withEditing }: { data: FeedPost; withEditing?: boolean }) => {
   const formatedDate = new Date(data.date).toLocaleDateString();
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(menuAnchor);
@@ -31,9 +31,11 @@ const Post = ({ data }: { data: FeedPost }) => {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings" onClick={(e) => setMenuAnchor(e.currentTarget)}>
-            <MoreVertIcon />
-          </IconButton>
+          withEditing && (
+            <IconButton aria-label="settings" onClick={(e) => setMenuAnchor(e.currentTarget)}>
+              <MoreVertIcon />
+            </IconButton>
+          )
         }
         title={data.title}
         subheader={`${formatedDate} by ${data.creator}`}

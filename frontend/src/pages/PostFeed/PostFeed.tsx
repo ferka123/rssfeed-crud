@@ -7,7 +7,7 @@ import Post from '../../components/Post/Post';
 import { useGetPostsQuery } from '../../redux/api/endpoints/post';
 import { useAppSelector } from '../../redux/store';
 
-const PostFeed = () => {
+const PostFeed = ({ withEditing }: { withEditing?: boolean }) => {
   const feedOptions = useAppSelector((store) => store.feedState);
   const { data } = useGetPostsQuery(feedOptions);
   return (
@@ -16,12 +16,12 @@ const PostFeed = () => {
         <FeedControls />
         <Grid container gap={3} justifyContent="space-between">
           {data?.posts.map((postData) => (
-            <Post key={postData._id} data={postData} />
+            <Post key={postData._id} data={postData} withEditing={withEditing} />
           ))}
         </Grid>
         <Paginatior total={data?.total ?? 0} options={feedOptions} />
       </Stack>
-      <AddPostButton />
+      {withEditing && <AddPostButton />}
     </>
   );
 };
