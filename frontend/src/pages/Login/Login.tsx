@@ -50,7 +50,7 @@ const Login = () => {
   return (
     <Container
       component="main"
-      maxWidth="md"
+      maxWidth="sm"
       sx={{
         display: 'flex',
         flexGrow: '1',
