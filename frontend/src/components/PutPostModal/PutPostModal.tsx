@@ -6,6 +6,7 @@ import TextInput from './TextInput';
 import ImageInput from './ImageInput';
 import { addPostSchema, updatePostSchema, PostForm } from './schemas';
 import { PutPostModalProps } from './types';
+import { enqueueSnackbar } from 'notistack';
 
 const PutPostModal: React.FC<PutPostModalProps> = ({ open, handleClose, values }) => {
   const { image: defaultImage, _id: id, ...defaultValues } = values ?? {};
@@ -26,7 +27,13 @@ const PutPostModal: React.FC<PutPostModalProps> = ({ open, handleClose, values }
       }
     });
     const mutation = id ? updatePost({ id, body: formData }) : addPost(formData);
-    mutation.unwrap().then(() => onClose());
+    mutation
+      .unwrap()
+      .then(
+        () => enqueueSnackbar(`Post ${id ? 'updated' : 'added'}`, { variant: 'success' }),
+        () => enqueueSnackbar('Operation failed', { variant: 'error' })
+      )
+      .finally(() => onClose());
   };
 
   const onClose = () => {

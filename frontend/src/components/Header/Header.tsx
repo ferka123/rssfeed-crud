@@ -12,6 +12,7 @@ import { FormEvent, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useLoginCheckQuery, useLogoutMutation } from '../../redux/api/endpoints/auth';
 import { useLocation } from 'react-router-dom';
+import { enqueueSnackbar } from 'notistack';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -68,7 +69,12 @@ const Header = () => {
   const showAuthBtn = location.pathname !== '/login';
 
   const handleLogout = () => {
-    logout();
+    logout()
+      .unwrap()
+      .then(
+        () => enqueueSnackbar('You have logged out', { variant: 'default' }),
+        () => enqueueSnackbar('Logout failed', { variant: 'error' })
+      );
   };
 
   const handleSubmit = (e: FormEvent) => {

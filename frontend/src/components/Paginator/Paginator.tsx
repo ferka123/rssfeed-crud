@@ -18,6 +18,7 @@ const Paginatior = ({ total, options }: { total: number; options: FeedOptions })
         showFirstButton
         showLastButton
         onChange={handleChange}
+        sx={{ mb: 3 }}
       />
     </Stack>
   );

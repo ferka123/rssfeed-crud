@@ -21,6 +21,7 @@ import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { enqueueSnackbar } from 'notistack';
 
 const LoginSchema = z.object({
   login: z.string().min(5),
@@ -42,7 +43,12 @@ const Login = () => {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const onSubmit = (data: LoginData) => {
-    login(data);
+    login(data)
+      .unwrap()
+      .then(
+        () => enqueueSnackbar('Login succesfful', { variant: 'success' }),
+        () => enqueueSnackbar('Login failed', { variant: 'error' })
+      );
   };
 
   if (isLoggedIn === undefined) return <div></div>;

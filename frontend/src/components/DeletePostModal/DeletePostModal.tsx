@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent } from '@mui/material';
+import { enqueueSnackbar } from 'notistack';
 import { useDeletePostMutation } from '../../redux/api/endpoints/post';
 
 export type Props = {
@@ -13,7 +14,11 @@ const DeletePostModal: React.FC<Props> = ({ open, handleClose, id }) => {
   const handleDelete = () => {
     deletePost(id)
       .unwrap()
-      .then(() => handleClose());
+      .then(
+        () => enqueueSnackbar('Post Deleted', { variant: 'success' }),
+        () => enqueueSnackbar('Failed to delete', { variant: 'error' })
+      )
+      .finally(() => handleClose());
   };
   return (
     <Dialog
