@@ -10,6 +10,8 @@ import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { setOptions } from '../../redux/features/feedSlice';
 import { FormEvent, useState } from 'react';
 import { Stack } from '@mui/material';
+import { useLoginCheckQuery, useLogoutMutation } from '../../redux/api/endpoints/auth';
+import { useLocation } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -57,6 +59,17 @@ const Header = () => {
   const defSearchValue = useAppSelector((store) => store.feedState.search);
   const [searchValue, setSearchValue] = useState(defSearchValue);
   const dispatch = useAppDispatch();
+  const [logout] = useLogoutMutation();
+
+  const { data: isLoggedIn } = useLoginCheckQuery();
+
+  const location = useLocation();
+  const showSearch = ['/', '/admin'].includes(location.pathname);
+  const showAuthBtn = location.pathname !== '/login';
+
+  const handleLogout = () => {
+    logout();
+  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -75,23 +88,33 @@ const Header = () => {
           >
             RSS Feed
           </Typography>
-          <form onSubmit={handleSubmit}>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
-          </form>
+          {showSearch && (
+            <form onSubmit={handleSubmit}>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+              </Search>
+            </form>
+          )}
+
           <Stack sx={{ flexGrow: 1 }}>
-            <Button color="inherit" sx={{ marginLeft: 'auto' }}>
-              Login
-            </Button>
+            {showAuthBtn &&
+              (isLoggedIn ? (
+                <Button color="inherit" sx={{ marginLeft: 'auto' }} onClick={handleLogout}>
+                  Logout
+                </Button>
+              ) : (
+                <Button href="/login" color="inherit" sx={{ marginLeft: 'auto' }}>
+                  Login
+                </Button>
+              ))}
           </Stack>
         </Toolbar>
       </AppBar>
