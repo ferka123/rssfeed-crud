@@ -12,4 +12,6 @@ export interface FeedOptions {
   limit: number;
   sortby: SortBy;
   search: string;
+  filterdate: string;
+  filtercreator: string;
 }

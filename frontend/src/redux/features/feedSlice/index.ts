@@ -5,7 +5,9 @@ const initialState: FeedOptions = {
   search: '',
   page: 0,
   limit: 6,
-  sortby: SortBy.dateDsc
+  sortby: SortBy.dateDsc,
+  filterdate: '',
+  filtercreator: ''
 };
 
 export const feedSlice = createSlice({

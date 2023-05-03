@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
+import { FilterQuery } from 'mongoose';
 
-import postModel from '../models/post.model';
+import postModel, { IPost } from '../models/post.model';
 import { GetPostsInput, AddPostInput, UpdatePostInput } from '../schemas/post.schema';
 import CustomError from '../utils/customError';
 
@@ -16,16 +17,41 @@ export const getPosts = async (
     const search = req.query.search ?? '';
     const sortBy = sort[0];
     const order = sort[1] === 'dsc' ? -1 : 1;
+    const [startDate, endDate] = req.query.filterdate?.split(',') ?? [];
+
+    const filter: FilterQuery<IPost> = { title: { $regex: search, $options: 'i' } };
+    if (req.query.filtercreator) filter.creator = { $in: req.query.filtercreator.split(',') };
+    if (startDate && endDate)
+      filter.date = {
+        $gte: new Date(startDate).toISOString(),
+        $lte: new Date(endDate).toISOString()
+      };
+
+    const total = await postModel.countDocuments(filter);
 
     const posts = await postModel
-      .find({ title: { $regex: search, $options: 'i' } })
+      .find(filter)
       .sort({ [sortBy]: order })
       .skip(page * limit)
       .limit(limit);
 
-    const total = await postModel.countDocuments({ title: { $regex: search, $options: 'i' } });
+    const [dateRange] = await postModel.aggregate<{
+      _id: null;
+      minDate: string;
+      maxDate: string;
+    }>([
+      {
+        $group: {
+          _id: null,
+          minDate: { $min: { $toDate: '$date' } },
+          maxDate: { $max: { $toDate: '$date' } }
+        }
+      }
+    ]);
 
-    return res.status(200).json({ status: 'ok', posts, total });
+    const { minDate, maxDate } = dateRange;
+
+    return res.status(200).json({ status: 'ok', posts, minDate, maxDate, total });
   } catch (e) {
     next(e);
   }
@@ -77,6 +103,16 @@ export const updatePost = async (
       status: 'ok',
       post
     });
+  } catch (e) {
+    next(e);
+  }
+};
+
+export const getPostCreators = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const creators = await postModel.distinct<string>('creator');
+
+    return res.status(200).json({ status: 'ok', creators });
   } catch (e) {
     next(e);
   }

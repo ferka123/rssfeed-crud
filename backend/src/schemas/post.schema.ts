@@ -12,7 +12,15 @@ export const getPostsSchema = object({
       'creator-dsc',
       'date-asc',
       'date-dsc'
-    ])
+    ]),
+    filterdate: string().refine(
+      (dates) => {
+        const [startDate, endDate] = dates;
+        return new Date(startDate) instanceof Date && new Date(endDate) instanceof Date;
+      },
+      { message: 'Must be 2 valid dates' }
+    ),
+    filtercreator: string()
   }).partial()
 });
 

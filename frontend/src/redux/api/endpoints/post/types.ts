@@ -12,5 +12,7 @@ export interface FeedPost {
 export interface FeedResponse {
   status: string;
   total: number;
+  minDate: string;
+  maxDate: string;
   posts: FeedPost[];
 }

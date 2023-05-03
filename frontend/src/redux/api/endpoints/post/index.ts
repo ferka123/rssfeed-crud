@@ -43,6 +43,15 @@ export const postsService = apiSlice.injectEndpoints({
       },
       transformResponse: (res: { post: FeedPost }) => res.post,
       invalidatesTags: ['Post']
+    }),
+    getCreators: builder.query<string[], void>({
+      query() {
+        return {
+          url: `/posts/creators`
+        };
+      },
+      transformResponse: (res: { creators: string[] }) => res.creators,
+      providesTags: ['Post']
     })
   })
 });
@@ -51,5 +60,6 @@ export const {
   useAddPostMutation,
   useDeletePostMutation,
   useGetPostsQuery,
-  useUpdatePostMutation
+  useUpdatePostMutation,
+  useGetCreatorsQuery
 } = postsService;

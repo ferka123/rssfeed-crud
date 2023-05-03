@@ -7,7 +7,7 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { setSearch } from '../../redux/features/feedSlice';
+import { setOptions } from '../../redux/features/feedSlice';
 import { FormEvent, useState } from 'react';
 import { Stack } from '@mui/material';
 
@@ -56,12 +56,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const Header = () => {
   const defSearchValue = useAppSelector((store) => store.feedState.search);
   const [searchValue, setSearchValue] = useState(defSearchValue);
-  console.log(defSearchValue, searchValue);
   const dispatch = useAppDispatch();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch(setSearch(searchValue));
+    dispatch(setOptions({ search: searchValue, page: 0 }));
   };
 
   return (

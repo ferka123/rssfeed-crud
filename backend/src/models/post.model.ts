@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-interface IPost {
+export interface IPost {
   title: string;
   image: string;
   content: string;
