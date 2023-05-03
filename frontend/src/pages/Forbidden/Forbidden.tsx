@@ -4,10 +4,10 @@ const Forbidden = () => {
   return (
     <Container maxWidth="md">
       <Stack flexDirection={'column'} alignItems="center" gap={3}>
-        <Typography variant="h3" color="primary" textAlign={'center'}>
+        <Typography variant="h4" color="primary" textAlign={'center'}>
           Access is forbidden
         </Typography>
-        <Button href="/" size="large" variant="contained" color="secondary">
+        <Button href="/" size="large" variant="contained" color="primary">
           Go to home
         </Button>
       </Stack>
