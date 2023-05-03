@@ -5,7 +5,7 @@ import CustomError from '../utils/customError';
 export const getMe = async (req: Request, res: Response, next: NextFunction) => {
   const { sub } = res.locals.user;
 
-  const user = await UserModel.findById(sub);
+  const user = await UserModel.findById(sub).lean();
 
   if (!user) return next(new CustomError('No such user', 404));
 

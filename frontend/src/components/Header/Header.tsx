@@ -11,7 +11,7 @@ import { setOptions } from '../../redux/features/feedSlice';
 import { FormEvent, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useLoginCheckQuery, useLogoutMutation } from '../../redux/api/endpoints/auth';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { enqueueSnackbar } from 'notistack';
 
 const Search = styled('div')(({ theme }) => ({
@@ -65,14 +65,19 @@ const Header = () => {
   const { data: isLoggedIn } = useLoginCheckQuery();
 
   const location = useLocation();
-  const showSearch = ['/', '/admin'].includes(location.pathname);
+  const showSearch = ['/', '/admin'].includes(location.pathname) && isLoggedIn;
   const showAuthBtn = location.pathname !== '/login';
+
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout()
       .unwrap()
       .then(
-        () => enqueueSnackbar('You have logged out', { variant: 'default' }),
+        () => {
+          enqueueSnackbar('You have logged out', { variant: 'default' });
+          navigate('/');
+        },
         () => enqueueSnackbar('Logout failed', { variant: 'error' })
       );
   };

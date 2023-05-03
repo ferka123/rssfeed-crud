@@ -17,7 +17,7 @@ import {
 import LockIcon from '@mui/icons-material/Lock';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useLoginCheckQuery, useLoginMutation } from '../../redux/api/endpoints/auth';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -40,6 +40,9 @@ const Login = () => {
     formState: { errors }
   } = useForm<LoginData>({ resolver: zodResolver(LoginSchema) });
 
+  const location = useLocation();
+  const redirectTo = location.state?.origin ?? '/';
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const onSubmit = (data: LoginData) => {
@@ -52,7 +55,7 @@ const Login = () => {
   };
 
   if (isLoggedIn === undefined) return <div></div>;
-  if (isLoggedIn || isSuccess) return <Navigate to="/" replace />;
+  if (isLoggedIn || isSuccess) return <Navigate to={redirectTo} replace />;
   return (
     <Container
       component="main"
