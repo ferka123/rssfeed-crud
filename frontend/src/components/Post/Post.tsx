@@ -23,7 +23,7 @@ const Post = ({ data }: { data: FeedPost }) => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   return (
-    <Card sx={{ width: { xs: '100%', md: 400 } }}>
+    <Card sx={{ width: { xs: '100%', md: 400 }, display: 'flex', flexDirection: 'column' }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="user avatar">
@@ -39,9 +39,9 @@ const Post = ({ data }: { data: FeedPost }) => {
         subheader={`${formatedDate} by ${data.creator}`}
       />
       <CardMedia component="img" height="194" image={data.image} alt={data.title} />
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Typography variant="body2" color="text.secondary">
-          {data.content}
+          {data.content.slice(0, -12)}
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ justifyContent: 'flex-end' }}>
