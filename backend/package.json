@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node -r ts-node/register src/app.ts",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "build": "tsc --outdir build",
+    "start:prod": "node build/app.js"
   },
   "author": "",
   "license": "ISC",
