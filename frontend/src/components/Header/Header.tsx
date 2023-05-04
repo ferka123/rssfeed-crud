@@ -65,7 +65,7 @@ const Header = () => {
   const { data: isLoggedIn } = useLoginCheckQuery();
 
   const location = useLocation();
-  const showSearch = ['/', '/admin'].includes(location.pathname) && isLoggedIn;
+  const showSearch = ['/', '/admin'].includes(location.pathname);
   const showAuthBtn = location.pathname !== '/login';
 
   const navigate = useNavigate();
