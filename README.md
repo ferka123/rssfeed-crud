@@ -54,6 +54,8 @@ configure .env file and put it inside backend folder
 ```
 npm install
 docker-compose up mongo
+npm run start
+cd frontend
 npm run dev
 ```
 
