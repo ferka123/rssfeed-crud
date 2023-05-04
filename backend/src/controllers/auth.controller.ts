@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response, CookieOptions } from 'express';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import { LoginInput } from '../schemas/user.schema';
 import userModel from '../models/user.model';
 import CustomError from '../utils/customError';
+import config from '../config';
+import RefreshTokenModel from '../models/refreshToken.model';
 
-const maxAge = Number(process.env.ACCESS_TOKEN_EXP) || 600000;
-
-const accessTokenCookie: CookieOptions = {
-  maxAge,
+const cookieOptions: CookieOptions = {
+  maxAge: config.refreshExp,
   httpOnly: true,
   sameSite: 'lax',
   secure: process.env.NODE_ENV === 'production'
@@ -26,11 +26,18 @@ export const loginUser = async (
       return next(new CustomError('Login or password are incorrect', 401));
     }
 
-    const token = sign({ sub: user._id, role: user.role }, process.env.JWT_SECRET as string, {
-      expiresIn: maxAge
+    const accessToken = sign({ sub: user._id, role: user.role }, config.jwtSecret, {
+      expiresIn: config.accessExp
     });
-    res.cookie('accesstoken', token, accessTokenCookie);
-    res.cookie('loggedin', true, { ...accessTokenCookie, httpOnly: false });
+    const refreshToken = sign({ sub: user._id }, config.jwtSecret, {
+      expiresIn: config.refreshExp
+    });
+
+    await new RefreshTokenModel({ token: refreshToken, user: user._id }).save();
+
+    res.cookie('refreshtoken', refreshToken, cookieOptions);
+    res.cookie('accesstoken', accessToken, { ...cookieOptions, maxAge: config.accessExp });
+    res.cookie('loggedin', true, { ...cookieOptions, httpOnly: false });
 
     res.status(200).json({
       status: 'ok',
@@ -41,8 +48,44 @@ export const loginUser = async (
   }
 };
 
-export const logoutUser = (req: Request, res: Response) => {
+export const refreshAccessToken = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const refreshtoken = req.cookies.refreshtoken as string | undefined;
+
+    if (!refreshtoken) return next(new CustomError('Failed to refresh token', 401));
+
+    const decoded = verify(refreshtoken, config.jwtSecret);
+
+    if (!decoded) {
+      return next(new CustomError('Failed to refresh token', 401));
+    }
+
+    const session = await RefreshTokenModel.findOne({ token: refreshtoken });
+    if (!session) return next(new CustomError('Failed to refresh token', 401));
+
+    const user = await userModel.findById(session.user).lean();
+    if (!user) return next(new CustomError('Failed to refresh token', 401));
+
+    const accessToken = sign({ sub: user._id, role: user.role }, config.jwtSecret, {
+      expiresIn: config.accessExp
+    });
+
+    res.cookie('accesstoken', accessToken, { ...cookieOptions, maxAge: config.accessExp });
+
+    res.status(200).json({
+      status: 'ok',
+      message: 'Refresh successful'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logoutUser = async (req: Request, res: Response) => {
+  const { refreshtoken } = req.cookies;
+  if (refreshtoken) await RefreshTokenModel.deleteOne({ token: refreshtoken });
   res.clearCookie('accesstoken');
+  res.clearCookie('refreshtoken');
   res.clearCookie('loggedin');
   return res.status(200).send({
     status: 'ok',
