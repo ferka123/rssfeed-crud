@@ -11,7 +11,7 @@ import { setOptions } from '../../redux/features/feedSlice';
 import { FormEvent, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useLoginCheckQuery, useLogoutMutation } from '../../redux/api/endpoints/auth';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { enqueueSnackbar } from 'notistack';
 
 const Search = styled('div')(({ theme }) => ({
@@ -92,12 +92,16 @@ const Header = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography
-            noWrap
             variant="h6"
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' }, marginRight: '20px' }}
+            component={Link}
+            to="/"
+            sx={{
+              marginRight: '20px',
+              textDecoration: 'none',
+              color: 'inherit'
+            }}
           >
-            RSS Feed
+            RSS
           </Typography>
           {showSearch && (
             <form onSubmit={handleSubmit}>
