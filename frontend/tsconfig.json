@@ -11,8 +11,8 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "baseUrl": "./src",
     "resolveJsonModule": true,
+    "outDir": "build",
     "jsx": "react-jsx"
   },
   "include": ["src", "src/index.tsx"],

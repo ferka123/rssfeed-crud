@@ -1,5 +1,11 @@
 import express from 'express';
-import { addPost, deletePost, getPosts, updatePost } from '../controllers/post.controller';
+import {
+  addPost,
+  deletePost,
+  getPostCreators,
+  getPosts,
+  updatePost
+} from '../controllers/post.controller';
 import { receiveImage } from '../middleware/receiveImage';
 import { requireAuth } from '../middleware/requireAuth';
 import { restrictTo } from '../middleware/restrictTo';
@@ -12,6 +18,7 @@ import { getPostsSchema, addPostSchema, updatePostSchema } from '../schemas/post
 const router = express.Router();
 
 router.get('/', validate(getPostsSchema), getPosts);
+router.get('/creators', getPostCreators);
 router.delete('/:id', requireAuth, restrictTo([UserRole.admin]), deletePost);
 router.post(
   '/',

@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-interface IPost {
+export interface IPost {
   title: string;
   image: string;
   content: string;
@@ -14,6 +14,7 @@ const postSchema = new Schema<IPost>({
   title: { type: String, required: true },
   image: { type: String, required: true },
   content: { type: String, required: true },
+  creator: { type: String, required: true },
   url: { type: String, required: true },
   date: { type: String, default: new Date().toISOString() },
   tags: {
