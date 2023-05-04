@@ -7,7 +7,7 @@ const Layout = () => {
     <>
       <CssBaseline />
       <Header />
-      <Container component={'main'} sx={{ flexGrow: 1 }}>
+      <Container component={'main'} sx={{ flexGrow: 1, display: 'flex' }}>
         <Outlet />
       </Container>
     </>

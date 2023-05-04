@@ -5,6 +5,7 @@ import { useGetCreatorsQuery } from '../../../redux/api/endpoints/post';
 import { setOptions } from '../../../redux/features/feedSlice';
 import { useAppDispatch, useAppSelector } from '../../../redux/store';
 import FiltersDatePicker from './FiltersDatePicker';
+import FilterCreatorSkeleton from './FiltersSkeleton';
 
 interface FormData {
   filtercreator: string[];
@@ -14,7 +15,7 @@ interface FormData {
 
 const FiltersForm = () => {
   const methods = useForm<FormData>();
-  const { data } = useGetCreatorsQuery();
+  const { data, isLoading: isCreatorsLoading } = useGetCreatorsQuery();
   const intialCreators = useAppSelector((store) => store.feedState.filtercreator).split(',');
   const dispatch = useAppDispatch();
 
@@ -68,6 +69,7 @@ const FiltersForm = () => {
                 label={creatorName}
               />
             ))}
+            {isCreatorsLoading && <FilterCreatorSkeleton />}
           </FormGroup>
           <FiltersDatePicker />
           <Stack flexDirection={'row'} justifyContent="flex-end" gap={2}>
