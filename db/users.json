@@ -1,0 +1,17 @@
+[{
+  "_id": {
+    "$oid": "644e319e071cb59edd7dc155"
+  },
+  "login": "admin",
+  "password": "$2a$12$pZyWqrCdxrbDLYHD4Xztg.43jxcaqDof6iGAnJ1rsm.Vv2HrDuGi6",
+  "role": "admin",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6452940e6eb131127c10306d"
+  },
+  "login": "user12345",
+  "password": "$2a$12$XP/5ursK4ascDT.muz.ULeZG2CYCqH4Wc4TS97L9pqp5QwE4wmj3q",
+  "role": "user",
+  "__v": 0
+}]
