@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -18,6 +19,15 @@ app.use(cookieParser());
 app.use('/api/posts', postRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+
+// Serve frontend
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, '../../frontend/dist', 'index.html'))
+  );
+}
 
 // error Handler
 app.use(errorHandler);

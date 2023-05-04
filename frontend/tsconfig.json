@@ -12,6 +12,7 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "outDir": "build",
     "jsx": "react-jsx"
   },
   "include": ["src", "src/index.tsx"],
