@@ -70,9 +70,18 @@ Since it's a test project, it doesn't have register enpoint for adding users. To
   password: 123456789
 ```
 
+#### App routes
+<details>
+
+  - / - Feed page available to all users and quests
+  - /admin - Feed page with post adding, deleting and editing abilities (Admin UI)
+  - /login - Login page
+
+</details>
+
 
 #### API Documentation
 [Swagger](https://app.swaggerhub.com/apis-docs/ferka123/RSSFeed/1.0)
 
 #### Deployed app
-[Railway.app](https://app.swaggerhub.com/apis-docs/ferka123/RSSFeed/1.0)
+[Railway.app](https://rssfeed-crud-production.up.railway.app)
