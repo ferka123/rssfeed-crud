@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGODB_DATABASE_NAME}
+    volumes:
+      - mongo:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - shared-network
+  
+  api:
+    container_name: rssfeed_api
+    restart: unless-stopped
+    image: rssfeed-api-prod
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+      RSS_POLLING_TIME: ${RSS_POLLING_TIME}
+      CLOUD_NAME: ${CLOUD_NAME}
+      CLOUD_FOLDER: ${CLOUD_FOLDER}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+      ACCESS_TOKEN_EXP=: ${ACCESS_TOKEN_EXP}
+      REFRESH_TOKEN_EXP=: ${REFRESH_TOKEN_EXP}
+    build: 
+      context: backend
+      target: prod
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - shared-network
+    depends_on:
+      - mongo
+
+  client:
+    container_name: rssfeed_client
+    restart: unless-stopped
+    image: rssfeed-client-prod
+    build: 
+      context: frontend
+      target: prod
+      dockerfile: Dockerfile
+      args:
+        - API_HOST=${VITE_API_HOST}
+    ports:
+      - ${PORT:-80}:8081
+    networks:
+      - shared-network
+    depends_on:
+      - api
+
+volumes:
+  mongo:
+
+networks:
+  shared-network:
