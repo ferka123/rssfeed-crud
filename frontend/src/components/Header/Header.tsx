@@ -11,7 +11,7 @@ import { setOptions } from '../../redux/features/feedSlice';
 import { FormEvent, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useLoginCheckQuery, useLogoutMutation } from '../../redux/api/endpoints/auth';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { enqueueSnackbar } from 'notistack';
 
 const Search = styled('div')(({ theme }) => ({
@@ -65,7 +65,7 @@ const Header = () => {
   const { data: isLoggedIn } = useLoginCheckQuery();
 
   const location = useLocation();
-  const showSearch = ['/', '/admin'].includes(location.pathname) && isLoggedIn;
+  const showSearch = ['/', '/admin'].includes(location.pathname);
   const showAuthBtn = location.pathname !== '/login';
 
   const navigate = useNavigate();
@@ -88,16 +88,20 @@ const Header = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, marginBottom: 3 }}>
+    <Box sx={{ marginBottom: 3 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography
-            noWrap
             variant="h6"
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' }, marginRight: '20px' }}
+            component={Link}
+            to="/"
+            sx={{
+              marginRight: '20px',
+              textDecoration: 'none',
+              color: 'inherit'
+            }}
           >
-            RSS Feed
+            RSS
           </Typography>
           {showSearch && (
             <form onSubmit={handleSubmit}>

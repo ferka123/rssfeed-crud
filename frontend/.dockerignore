@@ -1,0 +1,9 @@
+.git
+.idea
+.editorconfig
+.env.production.local
+.env.development
+node_modules
+npm-debug.log
+Dockerfile
+build
