@@ -51,7 +51,7 @@ services:
       args:
         - API_HOST=${VITE_API_HOST}
     ports:
-      - ${PORT}:8081
+      - ${PORT:-80}:8081
     networks:
       - shared-network
     depends_on:
